@@ -4,9 +4,19 @@ services:
     container_name: jenkins-aws
     image: jenkins/jenkins
     ports:
-      - "8000:8000"
+      - "8080:8080"
     volumes:
       - "$PWD/jenkins_home:/var/jenkins_home"
+    networks:
+      - net
+
+  db_host:
+    container_name: db
+    image: mysql:5.7
+    environment:
+      - "MY_SQL_PASSWORD=1234"
+    volumes:
+      - "$PWD/db_data:/var/lib/mysql"
     networks:
       - net
 
