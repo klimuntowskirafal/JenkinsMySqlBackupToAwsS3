@@ -1,3 +1,5 @@
+remote-key
+remote-key.pub
 db_data/*
 jenkins_home/*
 .idea
