@@ -33,3 +33,14 @@ export AWS_ACCESS_KEY_ID=your-value-for-your-user
 export AWS_SECRET_ACCESS_KEY=your-value-for-your-user
 aws s3 cp /tmp/backup.sql s3://jenkins-mysql-backup-example-123/backup.sql
 ```
+
+5. copy script-mysql-backup.sh to remote-host-aws container to be able to automate backup creations
+```
+docker cp /centos/script-mysql-backup.sh remote-host-aws
+```
+
+6. from remote-host-aws container, make a script executable and execute
+```
+chmod -x script-mysql-backup.sh
+bash script-mysql-backup.sh
+```
