@@ -2,6 +2,10 @@
 
 Create backup of MySql db and store it in S3 with use of Jenkins job
 
+Prerequisites:
+- ssh keys generated and private key copied to container jenkins-aws:/tmp/remote-key
+- aws user_id and secret_key adjusted
+
 1. Run containers:
 ```
 docker-compose build
@@ -21,26 +25,19 @@ insert into info values ('rafa', '30');
 select * from info;
 ```
 
-3. dump manually example data to a file from remote_host container
+3. copy script-mysql-backup.sh to remote-host-aws container to be able to automate backup creations
 ```
-mysqldump -u root -h db_host -p testdb > /tmp/backup.sql
-```
-
-4. manually upload backup to s3 bucket 
-- requires aws user with s3 permission and Access Key and Secret Access Key generated
-```
-export AWS_ACCESS_KEY_ID=your-value-for-your-user
-export AWS_SECRET_ACCESS_KEY=your-value-for-your-user
-aws s3 cp /tmp/backup.sql s3://jenkins-mysql-backup-example-123/backup.sql
+docker cp /centos/script-mysql-backup.sh remote-host-aws:/tmp
 ```
 
-5. copy script-mysql-backup.sh to remote-host-aws container to be able to automate backup creations
+4. from remote-host-aws container, make a script executable and execute
 ```
-docker cp /centos/script-mysql-backup.sh remote-host-aws
+chmod -x /tmp/script-mysql-backup.sh
+bash /tmp/script-mysql-backup.sh
 ```
 
-6. from remote-host-aws container, make a script executable and execute
+5. in jenkins, add required in the script parameters, secrets, create a job and run it
+- add this executable script to jenkins job:
 ```
-chmod -x script-mysql-backup.sh
-bash script-mysql-backup.sh
+bash /tmp/script-mysql-backup.sh $DB_HOST_PARAM $DB_PASSWD_PARAM $DB_NAME_PARAM $AWS_USER_ID_PARAM $AWS_USER_SECRET_PARAM $AWS_BUCKET_NAME_PARAM
 ```
