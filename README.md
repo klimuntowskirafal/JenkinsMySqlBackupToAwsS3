@@ -25,18 +25,12 @@ insert into info values ('rafa', '30');
 select * from info;
 ```
 
-3. copy script-mysql-backup.sh to remote-host-aws container to be able to automate backup creations
+3. make a script executable which will allso alow jenkins to execute the script on the remote-host-aws container
 ```
-docker cp /centos/script-mysql-backup.sh remote-host-aws:/tmp
-```
-
-4. from remote-host-aws container, make a script executable and execute
-```
-chmod -x /tmp/script-mysql-backup.sh
-bash /tmp/script-mysql-backup.sh
+chmod -x centos/script-mysql-backup.sh
 ```
 
-5. in jenkins, add required in the script parameters, secrets, create a job and run it
+4. in jenkins, add required in the script parameters, secrets, create a job and run it
 - add this executable script to jenkins job:
 ```
 bash /tmp/script-mysql-backup.sh $DB_HOST_PARAM $DB_PASSWD_PARAM $DB_NAME_PARAM $AWS_USER_ID_PARAM $AWS_USER_SECRET_PARAM $AWS_BUCKET_NAME_PARAM
