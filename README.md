@@ -45,11 +45,11 @@ crumb=$(curl -u "user:password" -s 'http://localhost:8080/crumbIssuer/api/xml?xp
 ```
 curl -u "user:password" \
     -H "$crumb" \
-    -X POST "http://localhost:8080/job/db-backup-to-aws/build?delay=0sec"
+    -X POST "http://localhost:8080/job/<<job-name>>/build?delay=0sec"
 ```
 - use that crumb token to run job with no parameters
 ```
-curl -u "admin:123" \
+curl -u "user:password" \
     -H "$crumb" \
-    -X POST "http://localhost:8080/job/db-backup-to-aws/buildWithParameters?DB_HOST_PARAM=db_host&DB_NAME_PARAM=testdb&AWS_BUCKET_NAME_PARAM=jenkins-mysql-backup-example-123&AWS_USER_ID_PARAM=AKIAQL54MMB3PAO532WU"
+    -X POST "http://localhost:8080/job/<<job-name>>/buildWithParameters?DB_HOST_PARAM=db_host&DB_NAME_PARAM=testdb&AWS_BUCKET_NAME_PARAM=jenkins-mysql-backup-example-123&AWS_USER_ID_PARAM=AKIAQL54MMB3PAO532WU"
 ```
