@@ -35,3 +35,21 @@ chmod -x centos/script-mysql-backup.sh
 ```
 bash /tmp/script-mysql-backup.sh $DB_HOST_PARAM $DB_PASSWD_PARAM $DB_NAME_PARAM $AWS_USER_ID_PARAM $AWS_USER_SECRET_PARAM $AWS_BUCKET_NAME_PARAM
 ```
+
+5. run job externaly:
+- generate crumb token in shell:
+```
+crumb=$(curl -u "user:password" -s 'http://localhost:8080/crumbIssuer/api/xml?xpath=concat(//crumbRequestField,":",//crumb)')
+```
+- use that crumb token to run job with no parameters
+```
+curl -u "user:password" \
+    -H "$crumb" \
+    -X POST "http://localhost:8080/job/db-backup-to-aws/build?delay=0sec"
+```
+- use that crumb token to run job with no parameters
+```
+curl -u "admin:123" \
+    -H "$crumb" \
+    -X POST "http://localhost:8080/job/db-backup-to-aws/buildWithParameters?DB_HOST_PARAM=db_host&DB_NAME_PARAM=testdb&AWS_BUCKET_NAME_PARAM=jenkins-mysql-backup-example-123&AWS_USER_ID_PARAM=AKIAQL54MMB3PAO532WU"
+```
