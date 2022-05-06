@@ -3,7 +3,7 @@
 Create backup of MySql db and store it in S3 with use of Jenkins job
 
 Prerequisites:
-- ssh keys generated and private key copied to container jenkins-aws:/tmp/remote-key
+- ssh keys generated and stored in centos folder and private key copied to container jenkins-aws:/tmp/remote-key
 - aws user_id and secret_key adjusted
 
 1. Run containers:
